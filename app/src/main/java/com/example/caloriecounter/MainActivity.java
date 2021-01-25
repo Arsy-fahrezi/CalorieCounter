@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         // Check user in the table
         numberRows = db.count("users");
         if (numberRows <1 ){
+            // Sign up
+            Toast.makeText(this, "You are only few fields away from signing up...", Toast.LENGTH_LONG).show();
             Intent i = new Intent(MainActivity.this, sign_up.class);
             startActivity(i);
         }
@@ -56,6 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Toast.makeText(this, "Database Succesfully, Food Created", Toast.LENGTH_SHORT).show();
+
     }
 }

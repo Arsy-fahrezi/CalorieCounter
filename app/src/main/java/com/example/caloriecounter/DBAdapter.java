@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class DBAdapter {
     // Variable
     private static final String databaseName = "stramdiet";
-    private static  final int databaseVersion = 13;
+    private static  final int databaseVersion = 15;
 
     // DB Variable
     private final Context context;
@@ -49,6 +49,7 @@ public class DBAdapter {
                         "user_activity_level INT," +
                         "user_target_weight INT, " +
                         "user_target_weight_level INT, " +
+                        "user_mesurment VARCHAR, " +
                         "user_last_seen TIME, " +
                         "user_note VARCHAR);");
 
@@ -162,6 +163,16 @@ public class DBAdapter {
             }
         }
 
+        value = "'" + value + "'";
+
+        return value;
+    }
+
+    public double quoteSmart(double value) {
+        return value;
+    }
+
+    public int quoteSmart(int value) {
         return value;
     }
 
