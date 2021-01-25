@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class DBAdapter {
     /* 01 Variables ---------------------------------------- */
     private static final String databaseName = "CalorieV2";
-    private static final int databaseVersion = 7;
+    private static final int databaseVersion = 32;
 
     /* 02 Database variables ------------------------------- */
     private final Context context;
@@ -325,6 +325,19 @@ public class DBAdapter {
         }
         return mCursor;
     }
+
+    //Select by order(sort)
+    public Cursor select(String table, String[] fields, String whereClause, String whereCondition, String orderBy, String OrderMethod) throws SQLException
+    {
+        Cursor mCursor = db.query(table, fields, whereClause + "=" + whereCondition, null, null, null, orderBy + " " + OrderMethod, null);
+
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+
     /* 11 Update ----------------------------------------------------------------- */
     public boolean update(String table, String primaryKey, long rowId, String field, String value) {
         /* Update example:
