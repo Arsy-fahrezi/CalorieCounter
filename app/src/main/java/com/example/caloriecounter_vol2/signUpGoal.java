@@ -1,4 +1,4 @@
-package com.example.caloriecounter_vol2;
+ package com.example.caloriecounter_vol2;
 
 import android.content.Intent;
 import android.database.Cursor;

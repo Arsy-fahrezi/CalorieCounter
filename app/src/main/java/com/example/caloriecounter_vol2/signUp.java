@@ -68,12 +68,12 @@ public class signUp extends AppCompatActivity {/* Variables */
         TextView textViewErrorMessage = (TextView)findViewById(R.id.textViewErrorMessage);
         textViewErrorMessage.setVisibility(View.GONE);
 
-        /* Hide icnhes field */
+        /* Hide inches field */
         EditText editTextHeightInches = (EditText)findViewById(R.id.editTextHeightInches);
         editTextHeightInches.setVisibility(View.GONE);
 
 
-        /* Listener Mesurment spinner */
+        /* Listener Measurement spinner */
         Spinner spinnerMesurment = (Spinner)findViewById(R.id.spinnerMesurment);
         spinnerMesurment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -105,7 +105,7 @@ public class signUp extends AppCompatActivity {/* Variables */
     /*- Mesurment changed ------------------------------------------ */
     public void mesurmentChanged() {
 
-        // Mesurment spinner
+
         Spinner spinnerMesurment = (Spinner)findViewById(R.id.spinnerMesurment);
         String stringMesurment = spinnerMesurment.getSelectedItem().toString();
 
