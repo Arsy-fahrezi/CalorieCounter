@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="24dp"
+        android:layout_marginLeft="24dp">
+
+        <!--Headline-->
+        <TextView
+            android:id="@+id/textViewViewFoodName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/name"
+            android:textIsSelectable="false"
+            android:textSize="18sp"></TextView>
+
+        <TextView
+            android:id="@+id/textViewViewFoodManufactorName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/manufactor">
+        </TextView>
+        <!--//Headline-->
+
+        <!--Image-->
+        <ImageView
+            android:id="@+id/imageViewViewFoodImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:src="@drawable/diet">
+        </ImageView>
+        <!--//Image-->
+
+        <!--About-->
+        <TextView
+            android:id="@+id/textViewViewFoodAbout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about">
+        </TextView>
+        <!--//About-->
+
+        <!--Description-->
+        <TextView
+            android:id="@+id/textViewViewFoodDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description">
+        </TextView>
+        <!--//Description-->
+
+        <!--Calories Table-->
+        <TextView
+            android:id="@+id/textViewViewFoodCaloriesTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/calories_table"
+            android:layout_marginTop="18dp"
+            android:textSize="18sp"></TextView>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Image 1-->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/textViewViewFoodBlank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/blank" />
+
+                <TextView
+                    android:id="@+id/textViewViewFoodEnergy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/energy" />
+
+                <TextView
+                    android:id="@+id/textViewViewFoodProteins"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/proteins" />
+                <TextView
+                    android:id="@+id/textViewViewFoodCarbs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/carbs" />
+                <TextView
+                    android:id="@+id/textViewViewFoodFat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/fat" />
+            </TableRow>
+            <!-- //Image 1-->
+
+            <!-- Image 2-->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/textViewViewFoodBlankPerHundred"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/per_hundred_gram" />
+
+                <TextView
+                    android:id="@+id/textViewViewFoodEnergyPerHundred"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/energy" />
+
+                <TextView
+                    android:id="@+id/textViewViewFoodProteinsPerHundred"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/proteins" />
+                <TextView
+                    android:id="@+id/textViewViewFoodCarbsPerHundred"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/carbs" />
+                <TextView
+                    android:id="@+id/textViewViewFoodFatPerHundred"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/fat" />
+            </TableRow>
+            <!-- //Image 2-->
+
+            <!-- Image 3-->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/textViewViewFoodBlankPerN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/per_meal" />
+
+                <TextView
+                    android:id="@+id/textViewViewFoodEnergyPerN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/energy" />
+
+                <TextView
+                    android:id="@+id/textViewViewFoodProteinsN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/proteins" />
+                <TextView
+                    android:id="@+id/textViewViewFoodCarbsPerN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/carbs" />
+                <TextView
+                    android:id="@+id/textViewViewFoodFatPerN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:text="@string/fat" />
+            </TableRow>
+            <!-- //Image 3-->
+        </TableLayout>
+        <!--//Calories Table-->
+    </LinearLayout>
+</ScrollView>

@@ -44,7 +44,7 @@ public class categoriesFragment extends Fragment {
     private MenuItem menuItemDelete;
 
     private String currentID;
-    private String gcurrentName;
+    private String currentName;
 
     // Fragment Variables (Necessary)
     private static final String ARG_PARAM1 = "param1";
@@ -236,15 +236,16 @@ public class categoriesFragment extends Fragment {
         listCursor.moveToPosition(listItemIDClicked);
 
         // Get ID and name from cursor
-        String id = listCursor.getString(0);
-        String name = listCursor.getString(1);
+        currentID = listCursor.getString(0);
+        currentName = listCursor.getString(1);
         String parentID = listCursor.getString(2);
 
         // Change title
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle(name);
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle(currentName);
+
 
         // Move to sub class
-        populateList(id, name);
+        populateList(currentID, currentName);
     } // listItemClicked
 
     public void createNewCategory(){
@@ -365,17 +366,216 @@ public class categoriesFragment extends Fragment {
 
     // Edit Category
     public void editCategory() {
-        Toast.makeText(getActivity(), "You want to edit food", Toast.LENGTH_SHORT).show();
+        //Edit name  = currentName
+        //Edit ID = currentID
+        //Toast.makeText(getActivity(), "You want to edit food \nName : " + currentName + "\nID : " + currentID, Toast.LENGTH_SHORT).show();
 
+        /*Change LAyout*/
+        int id = R.layout.fragment_categories_add_edit;
+        setMainView(id);
+
+        /*Database*/
+        DBAdapter db = new DBAdapter(getActivity());
+        db.open();
+
+        /*Ask for parent ID*/
+        Cursor c;
+        String fieldsC[] =new String[] {"category_parent_id"};
+        String currentIDSQL = db.quoteSmart(currentID);
+        c = db.select("categories", fieldsC, "_id", currentIDSQL);
+        String currentParentID = c.getString(0);
+        int intCurrentParentID = 0;
+        try {
+            intCurrentParentID = Integer.parseInt(currentParentID);
+        }
+        catch (NumberFormatException nfe) {
+            System.out.println("Could not parse " + nfe);
+        }
+        //Toast.makeText(getActivity(), "ParentID : " + currentParentID, Toast.LENGTH_SHORT).show();
+
+
+        /*Fill name*/
+        EditText editTextName = (EditText) getActivity().findViewById(R.id.editTextName);
+        editTextName.setText(currentName);
+        
+        /*Fill spinner with categories*/
+        String fields[] = new String[] {
+                "_id",
+                "category_name",
+                "category_parent_id"
+        };
+        Cursor dbCursor = db.select("categories", fields, "category_parent_id", "0", "category_name", "ASC");
+
+        //Creating Array
+        int dbCursorCount = dbCursor.getCount();
+        String[] arraySpinnerCategories = new String[dbCursorCount+1];
+
+        //This is parent
+        arraySpinnerCategories[0] = "-";
+
+        //Convert Cursor to String
+        int correctParentID = 0;
+        for (int x=1;x<dbCursorCount+1;x++) {
+            arraySpinnerCategories[x] = dbCursor.getString(1).toString();
+
+            if (dbCursor.getString(0).toString().equals(currentParentID)) {
+                correctParentID = x;
+            }
+
+            //Move to next
+            dbCursor.moveToNext();
+        }
+
+        //Populate Spinner
+        Spinner spinnerParent = (Spinner) getActivity().findViewById(R.id.spinnerCategoryParent);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_spinner_item, arraySpinnerCategories);
+        spinnerParent.setAdapter(adapter);
+
+        //Select current spinner item, that is the parent to currentID
+        spinnerParent.setSelection(correctParentID);
+
+        /*CLose DB*/
+        db.close();
+
+        /*Submit Button Listener*/
+        Button buttonHome = (Button)getActivity().findViewById(R.id.buttonCategoriesSubmit);
+        buttonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editCategorySubmitOnClick();
+            }
+        });
     }
+
+    /*-----Edit Category Submit on Click-----*/
+    public void editCategorySubmitOnClick() {
+        /* Database */
+        DBAdapter db = new DBAdapter(getActivity());
+        db.open();
+
+        // Error?
+        int error = 0;
+
+        // Name
+        EditText editTextName = (EditText)getActivity().findViewById(R.id.editTextName);
+        String stringName = editTextName.getText().toString();
+        if(stringName.equals("")){
+            Toast.makeText(getActivity(), "Please fill in a name.", Toast.LENGTH_SHORT).show();
+            error = 1;
+        }
+
+
+        // Parent
+        Spinner spinner = (Spinner)getActivity().findViewById(R.id.spinnerCategoryParent);
+        String stringSpinnerCategoryParent = spinner.getSelectedItem().toString();
+        String parentID;
+        if(stringSpinnerCategoryParent.equals("-")){
+            parentID = "0";
+        }
+        else{
+            // Find we want to find parent ID from the text
+            String stringSpinnerCategoryParentSQL = db.quoteSmart(stringSpinnerCategoryParent);
+            String fields[] = new String[] {
+                    "_id",
+                    "category_name",
+                    "category_parent_id"
+            };
+            Cursor findParentID = db.select("categories", fields, "category_name", stringSpinnerCategoryParentSQL);
+            parentID = findParentID.getString(0).toString();
+
+
+        }
+
+        if(error == 0){
+            // Current ID to long
+            long longCurrentID = Long.parseLong(currentID);
+
+            // Ready variables
+            long currentIDSQL = db.quoteSmart(longCurrentID);
+            String stringNameSQL = db.quoteSmart(stringName);
+            String parentIDSQL = db.quoteSmart(parentID);
+
+            // Insert into database
+            String input = "NULL, " + stringNameSQL + ", " + parentIDSQL;
+            // db.insert("categories", "_id, category_name, category_parent_id", input);
+            db.update("categories", "_id", currentIDSQL, "category_name", stringNameSQL);
+            db.update("categories", "_id", currentIDSQL, "category_parent_id", parentIDSQL);
+
+            // Give feedback
+            Toast.makeText(getActivity(), "Changes saved", Toast.LENGTH_LONG).show();
+
+            // Move user back to correct design
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, new categoriesFragment(), categoriesFragment.class.getName()).commit();
+
+        }
+
+        /* Close db */
+        db.close();
+    }//editCategorySubmitOnClick
 
 
     // Delete Category
     public void deleteCategory() {
+        /* Change layout */
+        int id = R.layout.fragment_categories_delete;
+        setMainView(id);
+
+        /* SubmitButton listener */
+        Button buttonCancel = (Button)getActivity().findViewById(R.id.buttonCategoriesCancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteCategoryCancelOnClick();
+            }
+        });
+
+        Button buttonConfirm = (Button)getActivity().findViewById(R.id.buttonCategoriesConfirmDelete);
+        buttonConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteCategoryConfirmOnClick();
+            }
+        });
+
+
+    }
+    public void deleteCategoryCancelOnClick(){
+        // Move user back to correct design
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new categoriesFragment(), categoriesFragment.class.getName()).commit();
+
+    }
+    public void deleteCategoryConfirmOnClick(){
+        // Delete from SQL
+
+        /* Database */
+        DBAdapter db = new DBAdapter(getActivity());
+        db.open();
+
+        // Current ID to long
+        long longCurrentID = Long.parseLong(currentID);
+
+        // Ready variables
+        long currentIDSQL = db.quoteSmart(longCurrentID);
+
+        // Delete
+        db.delete("categories", "_id", currentIDSQL);
+
+        // Close db
+        db.close();
+
+        // Give message
+        Toast.makeText(getActivity(), "Category deleted", Toast.LENGTH_LONG).show();
+
+        // Move user back to correct design
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, new categoriesFragment(), categoriesFragment.class.getName()).commit();
 
     }
 
-
+    /*- Fragment  methods -*/
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

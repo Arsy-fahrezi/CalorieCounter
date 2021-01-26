@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class DBAdapter {
     /* 01 Variables ---------------------------------------- */
     private static final String databaseName = "CalorieV2";
-    private static final int databaseVersion = 32;
+    private static final int databaseVersion = 10;
 
     /* 02 Database variables ------------------------------- */
     private final Context context;
@@ -162,6 +162,7 @@ public class DBAdapter {
                         " food_image_a VARCHAR," +
                         " food_image_b VARCHAR," +
                         " food_image_c VARCHAR," +
+                        " food_last_used DATE," +
                         " food_notes VARCHAR);");
 
 
@@ -237,6 +238,10 @@ public class DBAdapter {
         return value;
     }
     public int quoteSmart(int value) {
+        return value;
+    }
+
+    public long quoteSmart(long value) {
         return value;
     }
 
@@ -326,11 +331,17 @@ public class DBAdapter {
         return mCursor;
     }
 
-    //Select by order(sort)
+    // Select with order
     public Cursor select(String table, String[] fields, String whereClause, String whereCondition, String orderBy, String OrderMethod) throws SQLException
     {
-        Cursor mCursor = db.query(table, fields, whereClause + "=" + whereCondition, null, null, null, orderBy + " " + OrderMethod, null);
-
+        Cursor mCursor = null;
+        if(whereClause.equals("")) {
+            // We dont want to see where
+            mCursor = db.query(table, fields, null, null, null, null, orderBy + " " + OrderMethod, null);
+        }
+        else {
+            mCursor = db.query(table, fields, whereClause + "=" + whereCondition, null, null, null, orderBy + " " + OrderMethod, null);
+        }
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
@@ -363,5 +374,11 @@ public class DBAdapter {
         ContentValues args = new ContentValues();
         args.put(field, value);
         return db.update(table, args, primaryKey + "=" + rowId, null) > 0;
+    }
+
+    /* 12 Delete ----------------------------------------------------------------- */
+    // Delete a particular record
+    public int delete(String table, String primaryKey, long rowID) throws SQLException {
+        return db.delete(table, primaryKey + "=" + rowID, null);
     }
 }

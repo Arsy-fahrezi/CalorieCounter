@@ -114,4 +114,17 @@
     <string name="parent">Parent</string>
     <string name="name">Name</string>
     <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="are_you_sure_you_want_to_delete">Are you sure you want to delete?</string>
+    <string name="calories_table">Calories Table</string>
+    <string name="energy">Energy</string>
+    <string name="proteins">Proteins</string>
+    <string name="carbs">Carbs</string>
+    <string name="fat">Fat</string>
+    <string name="per_hundred_gram">Per 100 gram</string>
+    <string name="per_meal">Per Meal</string>
+    <string name="manufactor">Manufactor</string>
+    <string name="about">About</string>
+    <string name="description">Description</string>
+
 </resources>
