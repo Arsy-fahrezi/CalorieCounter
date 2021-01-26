@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.caloriecounter_vol2.DBAdapter;
 import com.example.caloriecounter_vol2.MainActivity;
 import com.example.caloriecounter_vol2.R;
+import com.example.caloriecounter_vol2.ui.food.foodCursorAdapter;
 
 import java.util.ArrayList;
 
@@ -246,7 +247,62 @@ public class categoriesFragment extends Fragment {
 
         // Move to sub class
         populateList(currentID, currentName);
+
+        //Show food in category
+        showFoodInCategory(currentID, currentName, parentID);
     } // listItemClicked
+
+    /*Show food in category*/
+    public void showFoodInCategory(String categoryId, String categoryName, String categoryParentID) {
+        if (!(categoryParentID.equals("0"))) {
+            /*Change Layout*/
+            int id  = R.layout.fragment_food;
+            setMainView(id);
+
+            /*Database*/
+            DBAdapter db = new DBAdapter(getActivity());
+            db.open();
+
+            /*Get Categories*/
+            String fields[] = new String[] {
+                    "_id",
+                    "food_name",
+                    "food_manufactor_name",
+                    "food_description",
+                    "food_serving_size_gram",
+                    "food_serving_size_gram_mesurment",
+                    "food_serving_size_pcs",
+                    "food_serving_size_pcs_mesurment",
+                    "food_energy_calculated"
+            };
+            listCursor = db.select("food", fields, "food_category_id", categoryId, "food_name", "ASC");
+
+            //Find ListView to populate
+            ListView lvItems = (ListView)getActivity().findViewById(R.id.listViewFood);
+
+            //Setup cursor adapter using cursor from last step
+            foodCursorAdapter continentsAdapter = new foodCursorAdapter(getActivity(), listCursor);
+
+            //Attach cursor adapter to listview
+            lvItems.setAdapter(continentsAdapter);
+
+            // OnClick
+            lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                    foodListItemClicked(arg2);
+                }
+            });
+
+            //Close DB
+            db.close();
+        }
+    }
+
+    /*- Food list item clicked ------------------------------------------------------------ */
+    private void foodListItemClicked(int intFoodListItemIndex){
+
+    }
 
     public void createNewCategory(){
         /* Change layout */

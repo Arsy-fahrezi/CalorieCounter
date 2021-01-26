@@ -146,5 +146,8 @@
     <string name="if_you_want_to_keep_your_weight">If you want to keep your weight</string>
     <string name="breakfast">Breakfast</string>
     <string name="lunch">Lunch</string>
-
+    <string name="portion_size">Portion size</string>
+    <string name="pcs">pcs</string>
+    <string name="gram">gram</string>
+    <string name="add_to_diary">Add to Diary</string>
 </resources>

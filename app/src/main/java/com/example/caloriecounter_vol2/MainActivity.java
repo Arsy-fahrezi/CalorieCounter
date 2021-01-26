@@ -12,6 +12,7 @@ import com.example.caloriecounter_vol2.ui.categories.categoriesFragment;
 import com.example.caloriecounter_vol2.ui.food.foodFragment;
 import com.example.caloriecounter_vol2.ui.goal.goalFragment;
 import com.example.caloriecounter_vol2.ui.home.HomeFragment;
+import com.example.caloriecounter_vol2.ui.home.addFoodToDiaryFragment;
 import com.example.caloriecounter_vol2.ui.profile.profileFragment;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -35,6 +36,7 @@ import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
+        addFoodToDiaryFragment.OnFragmentInteractionListener,
         HomeFragment.OnFragmentInteractionListener,
         categoriesFragment.OnFragmentInteractionListener,
         goalFragment.OnFragmentInteractionListener,
@@ -194,9 +196,9 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = HomeFragment.class;
         } else if (id == R.id.nav_profile) {
             fragmentClass = profileFragment.class;
-        } else if (id == R.id.nav_goal) {
+        } /*else if (id == R.id.nav_goal) {
             fragmentClass = goalFragment.class;
-        } else if (id == R.id.nav_categories) {
+        }*/ else if (id == R.id.nav_categories) {
             fragmentClass = categoriesFragment.class;
         } else if (id == R.id.nav_food) {
             fragmentClass = foodFragment.class;
