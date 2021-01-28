@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class DBAdapter {
     /* 01 Variables ---------------------------------------- */
     private static final String databaseName = "CalorieV2";
-    private static final int databaseVersion = 32;
+    private static final int databaseVersion = 36;
 
     /* 02 Database variables ------------------------------- */
     private final Context context;
@@ -92,13 +92,13 @@ public class DBAdapter {
             try{
                 db.execSQL("CREATE TABLE IF NOT EXISTS food_diary_cal_eaten (" +
                         " _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        " cal_eaten_id INTEGER, " +
-                        " cal_eaten_date DATE, " +
-                        " cal_eaten_meal_no INT, " +
-                        " cal_eaten_energy INT, " +
-                        " cal_eaten_proteins INT, " +
-                        " cal_eaten_carbs INT, " +
-                        " cal_eaten_fat INT);");
+                        " fdc_id INTEGER, " +
+                        " fdc_date DATE, " +
+                        " fdc_meal_no INT, " +
+                        " fdc_eaten_energy INT, " +
+                        " fdc_eaten_proteins INT, " +
+                        " fdc_eaten_carbs INT, " +
+                        " fdc_eaten_fat INT);");
             }
             catch (SQLException e) {
                 e.printStackTrace();
@@ -285,7 +285,7 @@ public class DBAdapter {
                                 "category_name",
                                 "category_parent_id"
                 };
-                allCategories = db.selectAllWhere("categories", fields);
+                allCategories = db.select("categories", fields);
                 */
         Cursor mCursor = db.query(table, fields, null, null, null, null, null, null);
         if (mCursor != null) {
