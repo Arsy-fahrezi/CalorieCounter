@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:layout_weight="10"
-                    android:text="@string/energy"
+                    android:text="Ideal Calorie"
                     android:textSize="18sp" />
             </TableRow>
         </TableLayout>
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_weight="10"
-                android:text="@string/energy"
+                android:text="2500"
                 android:textSize="18sp" />
         </TableRow>
 
