@@ -2,7 +2,6 @@ package com.example.caloriecounter_vol2.ui.home;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,24 +9,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.caloriecounter_vol2.DBAdapter;
 import com.example.caloriecounter_vol2.MainActivity;
 import com.example.caloriecounter_vol2.R;
-
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
 
 public class HomeFragment extends Fragment {
 
@@ -42,10 +30,6 @@ public class HomeFragment extends Fragment {
     // Holder for buttons on toolbar
     private String currentId;
     private String currentName;
-
-    private String currentDateYear = "";
-    private String currentDateMonth = "";
-    private String currentDateDay = "";
 
 
     /*- 02 Fragment Variables ----------------------------------------------------------- */
@@ -84,7 +68,7 @@ public class HomeFragment extends Fragment {
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("Home");
 
         // getDataFromDbAndDisplay
-        initializeHome();
+        initalizeHome();
 
         // Create menu
         // setHasOptionsMenu(true);
@@ -145,45 +129,8 @@ public class HomeFragment extends Fragment {
     }
     /*- Our own methods -*/
 
-    /*- Initialize home ------------------------------------------------------------ */
-    private void initializeHome(){
-
-
-        if(currentDateYear.equals("") || currentDateMonth.equals("") || currentDateDay.equals("")) {
-            Calendar calender = Calendar.getInstance();
-            int year = calender.get(Calendar.YEAR);
-            int month = calender.get(Calendar.MONTH);
-            int day = calender.get(Calendar.DAY_OF_MONTH);
-
-
-            currentDateYear = "" + year;
-
-            month = month+1;
-            String stringMonth;
-            if(month <10) {
-                currentDateMonth = "0" +month;
-            }else {
-                currentDateMonth = "" + month;
-
-            }
-
-            if(day <10) {
-                currentDateDay = "0" + day;
-            }else {
-                currentDateDay = "" + day;
-            }
-
-        }
-            String stringFdDate = currentDateYear  + "-" + currentDateMonth + "-" + currentDateDay;
-
-            updateTable(stringFdDate, "0");
-
-
-
-
-
-
-
+    /*- Initalize home ------------------------------------------------------------ */
+    private void initalizeHome(){
         /* Breakfast listener */
         ImageView imageViewAddBreakfast = (ImageView)getActivity().findViewById(R.id.imageViewAddBreakfast);
         imageViewAddBreakfast.setOnClickListener(new View.OnClickListener() {
@@ -192,116 +139,12 @@ public class HomeFragment extends Fragment {
                 addFood(0); // 0 == Breakfast
             }
         });
-
-
     } // initalizeHome
 
+    /*- Initalize home ------------------------------------------------------------ */
 
-    private  void updateTable(String stringDate,String stringMealNumber) {
-        //Toast.makeText(getActivity(), "Update Table date = " +stringDate, Toast.LENGTH_SHORT).show();
+    /*- Initalize home ------------------------------------------------------------ */
 
-        DBAdapter db = new DBAdapter(getActivity());
-        db.open();
-
-        Cursor allCategories;
-        String fields[] = new String[] {
-                "_id",
-                "fd_food_id",
-                "fd_serving_size_gram",
-                "fd_serving_size_gram_mesurment",
-                "fd_serving_size_pcs",
-                "fd_serving_size_pcs_mesurment",
-                "fd_energy_calculated",
-                "fd_protein_calculated",
-                "fd_carbohydrates_calculated",
-                "fd_fat_calculated"
-        };
-        String stringDateSQL = db.quoteSmart(stringDate);
-        Cursor cursorFd = db.select("food_diary", fields, "fd_date", stringDateSQL);
-
-        String fieldsFood[] = new String[] {
-                "_id",
-                "food_name",
-                "food_manufactor_name",
-        };
-        Cursor cursorFood;
-
-        String stringFdFoodId = "";
-        String stringFdFoodIdSQL = "";
-
-        String stringFdServingSizeGram = "";
-        String stringFdServingSizeGramMesurment = "";
-        String stringFdServingSizePcs = "";
-        String stringFdServingSizePcsMesurment = "";
-        String stringFdEnergyCalculated = "";
-
-        String stringFoodID = "";
-        String stringFoodName = "";
-        String stringFoodManufactorName  = "";
-
-        int intCursorFdCount = cursorFd.getCount();
-        for(int x=0;x<intCursorFdCount;x++) {
-            String stringFdID = cursorFd.getString(0);
-            //Toast.makeText(getActivity(), "ID: " + stringFdID, Toast.LENGTH_SHORT).show();
-
-            String food_id = cursorFd.getString(1);
-            String food_idSQL = db.quoteSmart(food_id);
-
-            String fdServingSizeGram = cursorFd.getString(2);
-            String fdServingSizeGramMeasurement = cursorFd.getString(3);
-            String fdServingSizepcs = cursorFd.getString(4);
-            String fdServingSizepcsMeasurement = cursorFd.getString(5);
-            String fdEnergyCalculated= cursorFd.getString(6);
-
-
-            cursorFood = db.select("food", fieldsFood, "_id", food_idSQL);
-
-            String foodID = cursorFood.getString(0);
-            String foodName = cursorFood.getString(1);
-            String foodManufactorName = cursorFood.getString(2);
-
-
-            String subLine = foodManufactorName + ", " +
-                    fdServingSizeGram + " " +
-                    fdServingSizeGramMeasurement + ", " +
-                    fdServingSizepcs + " " +
-                    fdServingSizepcsMeasurement;
-
-            TableLayout t1 = (TableLayout)getActivity().findViewById(R.id.tableLayoutBreakfastItem);
-            TableRow tr1 = new TableRow(getActivity());
-            tr1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-            TableRow tr2 = new TableRow(getActivity());
-            tr2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-
-            TextView textViewName = new TextView(getActivity());
-            textViewName.setText(foodName);
-            tr1.addView(textViewName);
-
-            TextView textViewEnergy = new TextView(getActivity());
-            textViewEnergy.setText(fdEnergyCalculated);
-            tr1.addView(textViewEnergy);
-
-            TextView textViewSubLine = new TextView(getActivity()); // Add textview
-            textViewSubLine.setText(subLine);
-            tr2.addView(textViewSubLine);
-
-            t1.addView(tr1, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT)); /* Add row to TableLayout. */
-            t1.addView(tr2, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT)); /* Add row to TableLayout. */
-
-
-
-
-            cursorFd.moveToNext();
-        }
-
-
-
-
-        db.close();
-    }
-
-    // AddFood Method
     private void addFood(int mealNumber){
 
         /* Inialize fragmet */
